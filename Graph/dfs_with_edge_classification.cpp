@@ -9,8 +9,8 @@ void dfs(vector<list<int> > &graph, int u, vector<bool> &visited)
 {
 	cout<<"visited:"<<u<<endl;
 	visited[u]=true;
-    counter++;
-    start[u]=counter;
+	counter++;
+	start[u]=counter;
 	list<int>::iterator itr;
 	for(itr=graph[u].begin();itr!=graph[u].end();itr++)
     {
@@ -18,7 +18,7 @@ void dfs(vector<list<int> > &graph, int u, vector<bool> &visited)
 		if(!visited[v])
         {
             dfs(graph,v,visited);
-        }       
+        }
 	}
     counter++;
     finish[u]=counter;
