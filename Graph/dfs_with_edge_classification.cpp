@@ -55,18 +55,18 @@ void print_edges(vector<list<int> > &graph){
 
 int main()
 {
-	int u,v,s,nodes,edges;
-	cin>>nodes>>edges;
-	vector<list<int> >graph(nodes+1);
-    vector<bool> visited(nodes+1,false);
-    start.resize(nodes+1);
-    finish.resize(nodes+1);
-    for(int i=1;i<=edges;i++){
-        cin>>u>>v;
-        graph[u].push_back(v);
-    }
-    cin>>s;
-    dfs(graph,s,visited);
-    print_edges(graph);
-    return 0;
+		int u,v,s,nodes,edges;
+		cin>>nodes>>edges;
+		vector<list<int> >graph(nodes+1);
+		vector<bool> visited(nodes+1,false);
+		start.resize(nodes+1);
+		finish.resize(nodes+1);
+		for(int i=1;i<=edges;i++){
+		cin>>u>>v;
+		graph[u].push_back(v);
+		}
+		cin>>s;
+		dfs(graph,s,visited);
+		print_edges(graph);
+		return 0;
 }
