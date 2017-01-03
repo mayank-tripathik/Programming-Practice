@@ -7,7 +7,7 @@ int counter=0;
 
 void dfs(vector<list<int> > &graph, int u, vector<bool> &visited)
 {
-    cout<<"visited:"<<u<<endl;
+	cout<<"visited:"<<u<<endl;
 	visited[u]=true;
     counter++;
     start[u]=counter;
