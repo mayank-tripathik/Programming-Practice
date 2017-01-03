@@ -13,15 +13,15 @@ void dfs(vector<list<int> > &graph, int u, vector<bool> &visited)
 	start[u]=counter;
 	list<int>::iterator itr;
 	for(itr=graph[u].begin();itr!=graph[u].end();itr++)
-    {
+	{
 		int v=(*itr);
 		if(!visited[v])
-        {
-            dfs(graph,v,visited);
-        }
+		{
+			dfs(graph,v,visited);
+		}
 	}
-    counter++;
-    finish[u]=counter;
+	counter++;
+	finish[u]=counter;
 }
 
 void print_edges(vector<list<int> > &graph){
