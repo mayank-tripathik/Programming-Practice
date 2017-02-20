@@ -1,12 +1,14 @@
+/*
+ * Returns true if intersect otherwise false
+ */
+
+
 #include <cmath>
 #include <cstdio>
 #include <vector>
 #include <iostream>
 #include <algorithm>
 using namespace std;
-/*
- * Returns true if intersect otherwise false
- */
 
 typedef struct point{
     int x;
