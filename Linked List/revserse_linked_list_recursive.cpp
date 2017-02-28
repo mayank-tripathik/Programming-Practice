@@ -1,4 +1,4 @@
-*
+/*
  * Given a linked list. Reverse it.
  * O(n) solution
  */
