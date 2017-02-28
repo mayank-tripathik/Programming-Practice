@@ -1,3 +1,12 @@
+/*
+ * Input:
+ *  First List: 5->6->3  // represents number 365
+ *  Second List: 8->4->2 //  represents number 248
+ * Output
+ *  Resultant list: 3->1->6  // represents number 613
+ */
+
+
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -14,7 +23,6 @@ class node{
 };
 
 class linked_list{ 
-    public:
     node *head,*rear;
     int size;
     public:
@@ -22,6 +30,9 @@ class linked_list{
         head=NULL;
         rear=NULL;
         size=0;
+    }
+    node* root(){
+        return head;
     }
     void insert(int x){
         node *temp=new node(x);
@@ -57,8 +68,33 @@ class linked_list{
     }
 };
 
+linked_list sum_list(linked_list &list1, linked_list &list2){
+    linked_list result;
+    node *root1=list1.root();
+    node *root2=list2.root();
+    int sum,carry=0;
+    while(root1!=NULL || root2!=NULL){
+        sum=carry+(root1?root1->data:0)+(root2?root2->data:0);
+        if(sum>9){
+            carry=sum/10;
+            sum=sum%10;
+        }
+        else
+            carry=0;
+        result.push_back(sum);
+        if(root1)
+            root1=root1->next;
+        if(root2)
+            root2=root2->next;
+    }
+    if(carry)
+        result.push_back(carry);
+    return result;
+}
+
+
 int main(){
-    linked_list llone,lltwo,summed;
+    linked_list llone,lltwo,sum_of_list;
     int n;
     cin>>n;
     for(int i=0;i<n;i++){
@@ -72,56 +108,6 @@ int main(){
         cin>>x;
         lltwo.insert(x);
     }
-    llone.print();
-    lltwo.print();
-    int small_size=((llone.length()<lltwo.length())?llone.length():lltwo.length());
-    int large_size;
-    node *root;
-    if(lltwo.length()>llone.length()){
-        large_size=lltwo.length();
-        root=lltwo.head;
-    }    
-    else{
-        large_size=llone.length();
-        root=llone.head;
-    }
-    int carry=0;
-    int sum;
-    node *root1=llone.head;
-    node *root2=lltwo.head;
-    for(int i=0;i<small_size;i++){
-        sum=carry+(root1->data)+(root2->data);
-        cout<<sum<<endl;
-        if(sum>=10){
-            carry=sum/10;
-            sum=sum%10;
-        }
-         else
-            carry=0;
-        root->data=sum;
-        cout<<root->data<<endl;
-        summed.push_back(sum);
-        root=root->next;
-        root1=root1->next;
-        root2=root2->next;
-    }
-    cout<<"iside"<<endl;
-    for(int i=small_size;i<large_size;i++){
-        sum=carry+(root->data);
-        cout<<sum<<endl;
-        if(sum>=10){
-            carry=sum/10;
-            sum=sum%10;
-        }
-        else
-            carry=0;
-        root->data=sum;
-        cout<<root->data<<endl;
-        summed.push_back(sum);
-        root=root->next;
-    }
-    if(carry)
-        summed.push_back(carry);
-    summed.print();
-    
+    sum_of_list=sum_list(llone,lltwo);
+    sum_of_list.print();   
 }
