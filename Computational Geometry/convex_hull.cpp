@@ -1,13 +1,14 @@
 #include<bits/stdc++.h>
 #define PI 3.141592
+const double eps=1e-9;
 using namespace std;
 
 
 struct point{
     int x,y,index;
     point(){
-        
-    }
+       
+     }
     point(int _x, int _y){
         x=_x;
         y=_y;
@@ -15,17 +16,18 @@ struct point{
 };
 
 point start;
-void set_p0_as_min_point(vector<point> &poles){
-    point min_point=poles[0];
-    int min_point_index;
-    for(int i=1;i<poles.size();i++){
-        if((poles[i].y<min_point.y) || ((poles[i].y==min_point.y) && (poles[i].x<min_point.x))){
-            min_point=poles[i];
+
+void set_p0_as_min_point(vector<point> &points){
+    point min_point=points[0];
+    int min_point_index=0;
+    for(int i=1;i<points.size();i++){
+        if((points[i].y<min_point.y) || ((points[i].y==min_point.y) && (points[i].x<min_point.x))){
+            min_point=points[i];
             min_point_index=i;
         }
     }
-    swap(poles[0],poles[min_point_index]);
-    start=poles[0];
+    swap(points[0],points[min_point_index]);
+    start=points[0];
 }
 
 
@@ -57,21 +59,6 @@ bool compare(const point &point1, const point &point2){
        return false;
 }
 
-       
-bool non_left_turn(point p0, point p1, point p2){
-    int m,n;
-    m=p1.x-p0.x;
-    n=p1.y-p0.y;
-    point a(m,n);
-    m=p2.x-p0.x;
-    n=p2.y-p0.y;
-    point b(m,n);
-    if(((b.x*a.y)-(b.y*a.x))>0)
-        return true;
-    else
-        return false;
-}
-
 point next_to_top(stack<point> &mystack){
     point point_top=mystack.top();
     mystack.pop();
@@ -80,54 +67,63 @@ point next_to_top(stack<point> &mystack){
     return next_top;
 }
 
-void print(vector<point> &poles){
-    cout<<"sorted point\n"<<endl;
-    for(int i=0;i<poles.size();i++)
-        cout<<poles[i].x<<","<<poles[i].y<<endl;
+
+int orientation(point p, point q, point r)
+{
+    int val = (q.y - p.y) * (r.x - q.x) -
+            (q.x - p.x) * (r.y - q.y);
+
+    if (val == 0) return 0;
+    return (val > 0)? 1: 2; 
 }
-stack<point> convex_hull(vector<point> &poles){
-    set_p0_as_min_point(poles);
-    //cout<<"p0:"<<start.x<<","<<start.y<<endl;
-    sort(poles.begin()+1,poles.end(),compare);
-    //print(poles);
+
+stack<point> convex_hull(vector<point> &points){
+    set_p0_as_min_point(points);
+    sort(points.begin()+1,points.end(),compare);
+    int m = 1;
+    for (int i=1; i<points.size(); i++)
+    {
+        while (i < points.size()-1 && orientation(start, points[i], points[i+1]) == 0)
+            i++;
+        points[m] = points[i];
+        m++;
+    }   
+    points.resize(m);
     stack<point> mystack;
-    mystack.push(poles[0]);
-    mystack.push(poles[1]);
-    mystack.push(poles[2]);
-    for(int i=3;i<poles.size();i++){
-        while(non_left_turn(next_to_top(mystack),mystack.top(),poles[i])){
-            //cout<<i<<" this i makes non left turn\n";
+    mystack.push(points[0]);
+    mystack.push(points[1]);
+    mystack.push(points[2]);
+    for(int i=3;i<points.size();i++){
+        while(orientation(next_to_top(mystack), mystack.top(), points[i]) != 2){
             mystack.pop();
         }
-        //cout<<i<<" this i does not makes non left turn\n";
-        mystack.push(poles[i]);
+        mystack.push(points[i]);
     }
-    /*cout<<"point in convex hull\n";
-    while(!mystack.empty()){
-        point topp=mystack.top();
-        cout<<topp.x<<","<<topp.y<<endl;
-        mystack.pop();
-    }*/
     return mystack;
 }
        
 int main() {
     int n;
     cin>>n;
-    vector<point> poles(n);
+    vector<point> points(n);
     for(int i=0;i<n;i++){
         int x,y;
         cin>>x>>y;
-        poles[i].x=x;
-        poles[i].y=y; 
-        poles[i].index=i;
+        points[i].x=x;
+        points[i].y=y; 
+        points[i].index=i;
     }
-    stack<point> S=convex_hull(poles);
-    while(!S.empty())
-    {
-        point p=S.top();
-        S.pop();
-        cout<<p.x<<","<<p.y<<endl;
-	  }
+    if(n<3)
+        cout<<"Convex Hull not possible!"<<endl;
+    else{
+        stack<point> S=convex_hull(points);
+        cout<<"Points in Convex hull:"<<endl;
+        while(!S.empty())
+        {
+            point p=S.top();
+            S.pop();
+            cout<<p.x<<","<<p.y<<endl;
+        }       
+    }    
     return 0;
 }
