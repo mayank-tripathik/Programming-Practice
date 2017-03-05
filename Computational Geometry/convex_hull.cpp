@@ -89,6 +89,11 @@ stack<point> convex_hull(vector<point> &points){
         m++;
     }   
     points.resize(m);
+    if(m<=3){
+        for(int i=0;i<m;i++)
+            mystack.push(points[i]);
+        return mystack;
+    }
     stack<point> mystack;
     mystack.push(points[0]);
     mystack.push(points[1]);
