@@ -68,3 +68,41 @@ int main(){
             cin>>matrix[i][j];
     max_sub_rectangle(n);
 }
+
+
+/****  If only square matrix are allowed *****/
+void max_sub_rectangle(int n){
+    intialise_temp(n);
+    set_temp_as_cumulative_sum(n);
+    int max_sum=INT_MIN;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            for(int l=0;l<max(i,j);l++){
+                int a=i+l;
+                int b=j+l;
+                int curr_sum=sub_matrix_sum(a,b,i,j);
+                if(curr_sum>max_sum)
+                    max_sum=curr_sum;
+            }
+        }
+    }
+    cout<<max_sum<<endl;
+}
+
+
+/****  If only k*k matrix are allowed *****/
+void max_sub_rectangle(int n, int k){
+    intialise_temp(n);
+    set_temp_as_cumulative_sum(n);
+    int max_sum=INT_MIN;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            int a=i+k;
+            int b=j+k;
+            int curr_sum=sub_matrix_sum(a,b,i,j);
+            if(curr_sum>max_sum)
+                max_sum=curr_sum;
+        }
+    }
+    cout<<max_sum<<endl;
+}
